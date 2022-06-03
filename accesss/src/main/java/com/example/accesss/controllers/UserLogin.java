@@ -1,10 +1,11 @@
 package com.example.accesss.controllers;
 
+import com.example.accesss.VO.UserLoginVO;
 import com.example.accesss.resultTemplate.LoginResult;
 import com.example.accesss.services.UserLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,7 +16,7 @@ public class UserLogin {
     UserLoginService userLoginService;
 
     @PostMapping("/login")
-    public LoginResult userLogin(String account,String password,@Nullable String token){
+    public LoginResult userLogin(@RequestBody UserLoginVO userLoginVO){
         return null;
     }
 

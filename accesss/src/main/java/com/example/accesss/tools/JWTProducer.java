@@ -7,17 +7,17 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
-public class JWTTools {
+public class JWTProducer {
     private static final String secret_key="dhoiadjaoimq";//秘钥
     private static Algorithm algorithm = Algorithm.HMAC256(secret_key);//加密算法
     private static JWTVerifier verifier=JWT.require(algorithm)
                     .withClaimPresence("name")
                     .build();//校验器
-    public static String getToken(String name){
+    public static String getToken(String uuid){
         String token=null;
         try {
             token = JWT.create()
-                    .withClaim("name",name)
+                    .withClaim("uuid",uuid)
                     .sign(algorithm);
         } catch (JWTCreationException exception){
             //Invalid Signing configuration / Couldn't convert Claims.

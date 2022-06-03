@@ -1,15 +1,14 @@
-package com.example.accesss.resultTemplate;
+package com.example.accesss.VO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginResult {
-    String token;
-    Boolean pass;
-    String message;
+public class UserRegisterVO {
+    String phoneNum;
+    String passsword;
+    String nickName;
 }
