@@ -5,9 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class UserLoginVO {
-    String phonenum;
-    String password;
+@NoArgsConstructor
+public class TokenVO {
+    String token;
 }

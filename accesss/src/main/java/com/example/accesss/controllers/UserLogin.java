@@ -1,5 +1,6 @@
 package com.example.accesss.controllers;
 
+import com.example.accesss.VO.TokenVO;
 import com.example.accesss.VO.UserLoginVO;
 import com.example.accesss.resultTemplate.LoginResult;
 import com.example.accesss.services.UserLoginService;
@@ -17,7 +18,12 @@ public class UserLogin {
 
     @PostMapping("/login")
     public LoginResult userLogin(@RequestBody UserLoginVO userLoginVO){
-        return null;
+        return userLoginService.loginByPassword(userLoginVO);
+    }
+
+    @PostMapping("/loginByToken")
+    public LoginResult userLogin(@RequestBody TokenVO tokenVO){
+        return userLoginService.loginByToken(tokenVO);
     }
 
 
