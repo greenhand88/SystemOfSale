@@ -1,6 +1,8 @@
 package com.example.accesss.services;
 
+import com.example.accesss.mappers.UserMapper;
 import com.example.accesss.utils.UserInfor;
+import com.example.accesss.utils.UserRegisterInfor;
 import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.QueueBinding;
@@ -14,6 +16,8 @@ public class MQListenerService {
     @Autowired
     private RedisTemplate<String,Object> redisTemplate;
 
+    @Autowired
+    private UserMapper userMapper;
     @RabbitListener(bindings = @QueueBinding(
             value = @Queue("${mq.config.access.queue}"),
             exchange = @Exchange("${mq.config.access.exchange}"),
@@ -40,5 +44,18 @@ public class MQListenerService {
             key="${mq.config.logOut.routeKey}"))
     public void removeToken(String uuid){
         redisTemplate.delete(uuid);
+    }
+
+    @RabbitListener(bindings = @QueueBinding(
+            value = @Queue("${mq.config.register.queue}"),
+            exchange = @Exchange("${mq.config.register.exchange}"),
+            key="${mq.config.register.routeKey}"))
+    public void register(UserRegisterInfor userRegisterInfor){
+        userMapper.register(userRegisterInfor.getMd5(),
+                userRegisterInfor.getPhoneNum(),
+                userRegisterInfor.getPasssword(),
+                userRegisterInfor.getNickName(),
+                userRegisterInfor.getSalt()
+                );
     }
 }
