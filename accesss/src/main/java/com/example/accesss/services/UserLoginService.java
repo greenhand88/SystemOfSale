@@ -40,7 +40,7 @@ public class UserLoginService {
      */
     public LoginResult loginByPassword(UserLoginVO userLoginVO){
 
-        UserInfor userInfor = userMapper.getInforByPhoneNum(userLoginVO.getPhonenum());
+        UserInfor userInfor = userMapper.getInforByPhoneNum(userLoginVO.getPhoneNum());
         if(userInfor==null)
             return new LoginResult("",false,"null");
         if(userInfor.getPassword().equals(userLoginVO.getPassword())){

@@ -2,6 +2,7 @@ package com.example.accesss.services;
 
 import com.example.accesss.mappers.UserMapper;
 import com.example.accesss.utils.UserInfor;
+import com.example.accesss.utils.UserPInfor;
 import com.example.accesss.utils.UserRegisterInfor;
 import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;
@@ -57,5 +58,13 @@ public class MQListenerService {
                 userRegisterInfor.getNickName(),
                 userRegisterInfor.getSalt()
                 );
+    }
+
+    @RabbitListener(bindings = @QueueBinding(
+            value = @Queue("${mq.config.changePass.queue}"),
+            exchange = @Exchange("${mq.config.changePass.exchange}"),
+            key="${mq.config.changePass.routeKey}"))
+    public void changeP(UserPInfor userPInfor){
+        userMapper.changePassword(userPInfor.getUuid(), userPInfor.getPassword());
     }
 }

@@ -10,4 +10,7 @@ public class MD5Producer {
     public static String getMD5String(String text){
         return DigestUtils.md5Hex(text+salt);
     }
+    public static String getMD5String(String text,String newSalt){
+        return DigestUtils.md5Hex(text+newSalt);
+    }
 }

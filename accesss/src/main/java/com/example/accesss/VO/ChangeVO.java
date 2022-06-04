@@ -5,9 +5,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class UserLoginVO {
+@NoArgsConstructor
+public class ChangeVO {
     private String phoneNum;
-    private String password;
+    private String oldPassword;
+    private String newPassword;
 }
