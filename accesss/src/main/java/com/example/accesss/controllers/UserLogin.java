@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/user")
 public class UserLogin {
     @Autowired
-    UserLoginService userLoginService;
+    private UserLoginService userLoginService;
 
     @PostMapping("/login")
     public LoginResult userLogin(@RequestBody UserLoginVO userLoginVO){

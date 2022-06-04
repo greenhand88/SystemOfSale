@@ -10,9 +10,9 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserInfor implements Serializable {
-        String uuid;
-        String nickName;
-        String phoneNum;
-        String password;
-        String slat;
+        private String uuid;
+        private String nickName;
+        private String phoneNum;
+        private String password;
+        private String slat;
 }

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LoginResult {
-    String token;
-    Boolean pass;
-    String message;
+    private String token;
+    private Boolean pass;
+    private String message;
 }
