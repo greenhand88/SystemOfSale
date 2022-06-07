@@ -9,7 +9,9 @@ import com.example.access.utils.UserPInfor;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UserChangePService {
     @Autowired
     private AmqpTemplate amqpTemplate;
@@ -21,9 +23,9 @@ public class UserChangePService {
     private UserMapper userMapper;
     public LoginResult changePassword(ChangeVO changeVO){
         UserInfor inforByPhoneNum = userMapper.getInforByPhoneNum(changeVO.getPhoneNum());
-        String password= MD5Producer.getMD5String(changeVO.getOldPassword(),inforByPhoneNum.getSlat());
+        String password= MD5Producer.getMD5String(changeVO.getOldPassword(),inforByPhoneNum.getSalt());
         if(password.equals(inforByPhoneNum.getPassword())){
-            String md5String = MD5Producer.getMD5String(changeVO.getNewPassword(), inforByPhoneNum.getSlat());
+            String md5String = MD5Producer.getMD5String(changeVO.getNewPassword(), inforByPhoneNum.getSalt());
             sendNewPassword(new UserPInfor(inforByPhoneNum.getUuid(),md5String));
             return new LoginResult("",false,"密码修改成功!");
         }else{

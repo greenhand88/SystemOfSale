@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/access")
 public class UserAccess {
     @Autowired
     private UserLoginService userLoginService;
@@ -25,10 +25,10 @@ public class UserAccess {
         return userLoginService.loginByPassword(userLoginVO);
     }
 
-    @PostMapping("/loginByToken")
-    public LoginResult userLogin(@RequestBody TokenVO tokenVO){
-        return userLoginService.loginByToken(tokenVO);
-    }
+//    @PostMapping("/loginByToken")
+//    public LoginResult userLogin(@RequestBody TokenVO tokenVO){
+//        return userLoginService.loginByToken(tokenVO);
+//    }
 
     @PostMapping("/register")
     public LoginResult register(@RequestBody UserRegisterVO userRegisterVO){

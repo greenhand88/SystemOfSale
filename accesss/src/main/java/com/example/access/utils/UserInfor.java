@@ -14,5 +14,5 @@ public class UserInfor implements Serializable {
         private String nickName;
         private String phoneNum;
         private String password;
-        private String slat;
+        private String salt;
 }

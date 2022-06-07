@@ -10,9 +10,9 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserRegisterInfor implements Serializable {
-    private String md5;
+    private String uuid;
     private String phoneNum;
-    private String passsword;
+    private String md5;
     private String nickName;
     private String salt;
 }

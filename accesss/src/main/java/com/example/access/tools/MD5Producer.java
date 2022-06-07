@@ -8,9 +8,11 @@ public class MD5Producer {
         return salt;
     }
     public static String getMD5String(String text){
+        System.out.println(text + salt);
         return DigestUtils.md5Hex(text+salt);
     }
     public static String getMD5String(String text,String newSalt){
+        System.out.println(text + newSalt);
         return DigestUtils.md5Hex(text+newSalt);
     }
 }

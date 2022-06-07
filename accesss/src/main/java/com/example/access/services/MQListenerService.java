@@ -10,15 +10,16 @@ import org.springframework.amqp.rabbit.annotation.QueueBinding;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-
+import org.springframework.stereotype.Service;
 import java.util.concurrent.TimeUnit;
-
+@Service
 public class MQListenerService {
     @Autowired
     private RedisTemplate<String,Object> redisTemplate;
 
     @Autowired
     private UserMapper userMapper;
+
     @RabbitListener(bindings = @QueueBinding(
             value = @Queue("${mq.config.access.queue}"),
             exchange = @Exchange("${mq.config.access.exchange}"),
@@ -27,17 +28,17 @@ public class MQListenerService {
         redisTemplate.opsForValue().set(userInfor.getUuid(),userInfor,3, TimeUnit.HOURS);
     }
 
-    /**
-     * 热点数据延迟时间
-     * @param uuid
-     */
-    @RabbitListener(bindings = @QueueBinding(
-            value = @Queue("${mq.config.fresh.queue}"),
-            exchange = @Exchange("${mq.config.fresh.exchange}"),
-            key="${mq.config.fresh.routeKey}"))
-    public void freshToken(String uuid){
-        redisTemplate.expire(uuid,3,TimeUnit.HOURS);
-    }
+//    /**
+//     * 热点数据延迟时间
+//     * @param uuid
+//     */
+//    @RabbitListener(bindings = @QueueBinding(
+//            value = @Queue("${mq.config.fresh.queue}"),
+//            exchange = @Exchange("${mq.config.fresh.exchange}"),
+//            key="${mq.config.fresh.routeKey}"))
+//    public void freshToken(String uuid){
+//        redisTemplate.expire(uuid,3,TimeUnit.HOURS);
+//    }
 
     @RabbitListener(bindings = @QueueBinding(
             value = @Queue("${mq.config.logOut.queue}"),
@@ -52,9 +53,9 @@ public class MQListenerService {
             exchange = @Exchange("${mq.config.register.exchange}"),
             key="${mq.config.register.routeKey}"))
     public void register(UserRegisterInfor userRegisterInfor){
-        userMapper.register(userRegisterInfor.getMd5(),
+        userMapper.register(userRegisterInfor.getUuid(),
                 userRegisterInfor.getPhoneNum(),
-                userRegisterInfor.getPasssword(),
+                userRegisterInfor.getMd5(),
                 userRegisterInfor.getNickName(),
                 userRegisterInfor.getSalt()
                 );

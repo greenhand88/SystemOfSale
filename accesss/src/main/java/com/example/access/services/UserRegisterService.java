@@ -15,9 +15,9 @@ public class UserRegisterService {
 
     @Autowired
     private AmqpTemplate amqpTemplate;
-    @Value("${mq.config.reigister.exchange}")
+    @Value("${mq.config.register.exchange}")
     private String exchange;
-    @Value("${mq.config.reigister.routeKey}")
+    @Value("${mq.config.register.routeKey}")
     private String routeKey;
 
     public LoginResult register(UserRegisterVO userRegisterVO) {
