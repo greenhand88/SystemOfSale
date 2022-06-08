@@ -1,4 +1,5 @@
-package com.example.user.utils;
+package com.example.user.resultTemplate;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,10 +12,11 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserContext {
+public class UserInforResult {
     private String uuid;
     private String nickName;
     private String phoneNum;
     private LocalDate localDate;
     private String address;
+    private String message;
 }

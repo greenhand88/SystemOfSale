@@ -1,13 +1,13 @@
-package com.example.user.VO;
+package com.example.user.resultTemplate;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class loginVO {
-    String nickName;
-    String account;
+public class UserResult {
+    private String message;
 }
