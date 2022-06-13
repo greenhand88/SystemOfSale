@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.time.LocalDate;
+import java.util.Map;
 
 
 @Service
@@ -27,13 +28,20 @@ public class UserInforService {
     @Value("${mq.config.userInfor.routeKey}")
     private String userInfroRouteKey;
     public UserInforResult getAllInfor(String uuid){
-        UserInfor userInfor = (UserInfor)redisTemplate.opsForValue().get(uuid);
+        Map<Object, Object> entries = redisTemplate.opsForHash().entries(uuid);
+        UserInfor userInfor = new UserInfor(uuid,(String)entries.get("nickName"),
+                (String)entries.get("phoneNum"),
+                (String)entries.get("password"),
+                (String)entries.get("salt"));
         if(userInfor==null){
             return new UserInforResult("","","",LocalDate.parse("1980-01-01"),"","token失效!请重新登录");
         }
         else{
             amqpTemplate.convertAndSend(exchange,userInfroRouteKey,userInfor);
             UserContext allInfor = userInforMapper.getAllInfor(userInfor.getUuid());
+            if(allInfor==null)
+                return new UserInforResult(userInfor.getUuid(),userInfor.getNickName(),userInfor.getPhoneNum(),LocalDate.parse("1980-01-01"),
+                        "","成功获取所有个人信息");
             return new UserInforResult(userInfor.getUuid(),userInfor.getNickName(),userInfor.getPhoneNum(),allInfor.getLocalDate(),
                     allInfor.getAddress(),"成功获取所有个人信息");
         }

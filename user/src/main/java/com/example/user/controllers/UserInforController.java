@@ -12,9 +12,8 @@ public class UserInforController {
     @Autowired
     UserInforService userInforService;
     @PostMapping("/home")
-    public void getAllInfor(@RequestHeader(value = "uuid") String uuid){
-        System.out.println(uuid);
-        //return userInforService.getAllInfor(uuid);
+    public UserInforResult getAllInfor(@RequestHeader(value = "uuid") String uuid){
+        return userInforService.getAllInfor(uuid);
     }
 
 }
