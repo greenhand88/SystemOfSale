@@ -1,6 +1,5 @@
 package com.example.user.services;
 
-import com.example.user.VO.AccessVO;
 import com.example.user.mappers.UserInforMapper;
 import com.example.user.resultTemplate.UserInforResult;
 import com.example.user.utils.UserContext;
@@ -27,8 +26,8 @@ public class UserInforService {
     private String exchange;
     @Value("${mq.config.userInfor.routeKey}")
     private String userInfroRouteKey;
-    public UserInforResult getAllInfor(AccessVO accessVO){
-        UserInfor userInfor = (UserInfor)redisTemplate.opsForValue().get(accessVO.getUuid());
+    public UserInforResult getAllInfor(String uuid){
+        UserInfor userInfor = (UserInfor)redisTemplate.opsForValue().get(uuid);
         if(userInfor==null){
             return new UserInforResult("","","",LocalDate.parse("1980-01-01"),"","token失效!请重新登录");
         }

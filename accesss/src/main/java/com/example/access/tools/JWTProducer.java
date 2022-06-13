@@ -11,7 +11,7 @@ public class JWTProducer {
     private static final String secret_key="dhoiadjaoimq";//秘钥
     private static Algorithm algorithm = Algorithm.HMAC256(secret_key);//加密算法
     private static JWTVerifier verifier=JWT.require(algorithm)
-                    .withClaimPresence("name")
+                    .withClaimPresence("uuid")
                     .build();//校验器
     public static String getToken(String uuid){
         String token=null;

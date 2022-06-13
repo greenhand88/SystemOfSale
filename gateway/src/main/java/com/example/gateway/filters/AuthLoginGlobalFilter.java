@@ -57,7 +57,7 @@ public class AuthLoginGlobalFilter implements GlobalFilter, Ordered {
                 }
             }
         }
-        if (!status){
+        if (status){
             String token = exchange.getRequest().getHeaders().getFirst("token");
             ServerHttpResponse response = exchange.getResponse();
             //没有数据
@@ -101,6 +101,6 @@ public class AuthLoginGlobalFilter implements GlobalFilter, Ordered {
 
     @Override
     public int getOrder() {
-        return 0;
+        return -10000;
     }
 }
