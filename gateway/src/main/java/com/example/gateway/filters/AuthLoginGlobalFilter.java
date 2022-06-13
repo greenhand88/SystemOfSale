@@ -74,7 +74,7 @@ public class AuthLoginGlobalFilter implements GlobalFilter, Ordered {
                 //校验token
                 DecodedJWT verify = JWTProducer.verify(token);
                 Claim uuid = verify.getClaim("uuid");
-                UserInfor userInfor = (UserInfor)redisTemplate.opsForValue().get(uuid.asString());
+                String userInfor = (String)redisTemplate.opsForHash().get(uuid.asString(),"phoneNum");
                 if (userInfor==null){
                     JSONObject message = new JSONObject();
                     message.put("message", "token错误");

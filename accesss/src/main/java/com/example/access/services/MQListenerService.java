@@ -25,7 +25,12 @@ public class MQListenerService {
             exchange = @Exchange("${mq.config.access.exchange}"),
             key="${mq.config.access.routeKey}"))
     public void tokenToRedis(UserInfor userInfor){
-        redisTemplate.opsForValue().set(userInfor.getUuid(),userInfor,3, TimeUnit.HOURS);
+        redisTemplate.multi();
+        redisTemplate.opsForHash().put(userInfor.getUuid(),"phoneNum",userInfor.getPhoneNum());
+        redisTemplate.opsForHash().put(userInfor.getUuid(),"nickName",userInfor.getNickName());
+        redisTemplate.opsForHash().put(userInfor.getUuid(),"password",userInfor.getPassword());
+        redisTemplate.opsForHash().put(userInfor.getUuid(),"salt",userInfor.getSalt());
+        redisTemplate.exec();
     }
 
 //    /**
