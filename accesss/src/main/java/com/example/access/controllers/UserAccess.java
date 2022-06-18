@@ -7,10 +7,7 @@ import com.example.access.resultTemplate.LoginResult;
 import com.example.access.services.UserLoginService;
 import com.example.access.services.UserRegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping
@@ -35,4 +32,8 @@ public class UserAccess {
         return userRegisterService.register(userRegisterVO);
     }
 
+    @GetMapping("/getPublicKey")
+    public String getPublicKey(){
+        return userLoginService.getPublicKey();
+    }
 }

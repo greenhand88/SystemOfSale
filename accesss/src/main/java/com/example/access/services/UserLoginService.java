@@ -9,6 +9,7 @@ import com.example.access.mappers.UserMapper;
 import com.example.access.resultTemplate.LoginResult;
 import com.example.access.tools.JWTProducer;
 import com.example.access.tools.MD5Producer;
+import com.example.access.tools.RSAProducer;
 import com.example.access.utils.UserInfor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,6 +37,19 @@ public class UserLoginService {
     @Value("${mq.config.logOut.routeKey}")
     private String logOutRouteKey;
 
+    /**
+     * 获取公钥
+     * @return
+     */
+    public String getPublicKey() {
+        try{
+            RSAProducer instance = RSAProducer.getInstance();
+            return instance.getMypublicKey();
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
     /**
      *
      * @param userLoginVO

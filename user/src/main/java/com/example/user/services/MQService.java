@@ -1,6 +1,7 @@
 package com.example.user.services;
 
 import com.example.user.mappers.UserInforMapper;
+import com.example.user.utils.UserAddress;
 import com.example.user.utils.UserContext;
 import com.example.user.utils.UserInfor;
 import org.springframework.amqp.rabbit.annotation.Exchange;
@@ -23,5 +24,12 @@ public class MQService {
         if(allInfor==null){
             userInforMapper.basicAdd(userInfor.getUuid(),userInfor.getPhoneNum(),userInfor.getNickName());
         }
+    }
+    @RabbitListener(bindings = @QueueBinding(
+            value = @Queue("${mq.config.address.queue}"),
+            exchange = @Exchange("${mq.config.address.exchange}"),
+            key="${mq.config.address.routeKey}"))
+    public void addAddress(UserAddress userAddress){
+        userInforMapper.addAddress(userAddress.getAddress(),userAddress.getUuid());
     }
 }
