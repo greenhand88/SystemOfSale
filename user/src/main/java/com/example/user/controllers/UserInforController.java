@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class UserInforController {
     @Autowired
-    UserInforService userInforService;
+    private UserInforService userInforService;
     @PostMapping("/home")
     public UserInforResult getAllInfor(@RequestHeader(value = "uuid") String uuid){
         return userInforService.getAllInfor(uuid);

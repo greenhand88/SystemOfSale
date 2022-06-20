@@ -1,6 +1,7 @@
 package com.example.access.services;
 
 import com.example.access.mappers.UserMapper;
+import com.example.access.utils.LastTime;
 import com.example.access.utils.UserInfor;
 import com.example.access.utils.UserPInfor;
 import com.example.access.utils.UserRegisterInfor;
@@ -20,6 +21,10 @@ public class MQListenerService {
     @Autowired
     private UserMapper userMapper;
 
+    /**
+     *
+     * @param userInfor
+     */
     @RabbitListener(bindings = @QueueBinding(
             value = @Queue("${mq.config.access.queue}"),
             exchange = @Exchange("${mq.config.access.exchange}"),
@@ -33,6 +38,17 @@ public class MQListenerService {
         redisTemplate.exec();
     }
 
+    /**
+     * 刷新最近登录时间
+     * @param lastTime
+     */
+    @RabbitListener(bindings = @QueueBinding(
+            value = @Queue("${mq.config.time.queue}"),
+            exchange = @Exchange("${mq.config.time.exchange}"),
+            key="${mq.config.time.routeKey}"))
+    public void freshTime(LastTime lastTime){
+        userMapper.record(lastTime.getUuid(),lastTime.getLocalDate());
+    }
 //    /**
 //     * 热点数据延迟时间
 //     * @param uuid

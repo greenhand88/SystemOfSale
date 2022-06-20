@@ -10,12 +10,15 @@ import com.example.access.resultTemplate.LoginResult;
 import com.example.access.tools.JWTProducer;
 import com.example.access.tools.MD5Producer;
 import com.example.access.tools.RSAProducer;
+import com.example.access.utils.LastTime;
 import com.example.access.utils.UserInfor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.amqp.core.AmqpTemplate;
+
+import java.time.LocalDate;
 
 
 @Service
@@ -32,11 +35,10 @@ public class UserLoginService {
     private String exchange;
     @Value("${mq.config.access.routeKey}")
     private String routeKey;
-    @Value("${mq.config.fresh.routeKey}")
-    private String freshRouteKey;
     @Value("${mq.config.logOut.routeKey}")
     private String logOutRouteKey;
-
+    @Value("${mq.config.time.routeKey}")
+    private String timeRouteKey;
     /**
      * 获取公钥
      * @return
@@ -65,6 +67,7 @@ public class UserLoginService {
                 return new LoginResult("",false,"您的账号已经在另一个地方登录!");
             String token = JWTProducer.getToken(userInfor.getUuid());
             amqpTemplate.convertAndSend(exchange,routeKey,userInfor);
+            amqpTemplate.convertAndSend(exchange,timeRouteKey,new LastTime(userInfor.getUuid(), LocalDate.now()));
             return new LoginResult(token,true,"登录成功!");
         }else{
             return new LoginResult("",false,"密码错误!");

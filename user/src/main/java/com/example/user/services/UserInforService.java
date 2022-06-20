@@ -19,9 +19,9 @@ import java.util.Map;
 @Service
 public class UserInforService {
     @Autowired
-    UserInforMapper userInforMapper;
+    private UserInforMapper userInforMapper;
     @Autowired
-    AmqpTemplate amqpTemplate;
+    private AmqpTemplate amqpTemplate;
     @Autowired
     private RedisTemplate<String,Object> redisTemplate;
     @Value("${mq.config.userInfor.exchange}")

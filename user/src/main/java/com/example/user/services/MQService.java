@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class MQService {
     @Autowired
-    UserInforMapper userInforMapper;
+    private UserInforMapper userInforMapper;
     @RabbitListener(bindings = @QueueBinding(
             value = @Queue("${mq.config.userInfor.queue}"),
             exchange = @Exchange("${mq.config.userInfor.exchange}"),

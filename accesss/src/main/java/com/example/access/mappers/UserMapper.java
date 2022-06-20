@@ -5,6 +5,8 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import java.time.LocalDate;
+
 
 public interface UserMapper {
     @Select("select * from user where phonenum=#{phoneNum}")
@@ -16,4 +18,6 @@ public interface UserMapper {
     @Update("update user set password=#{newPassword} where uuid=#{uuid}")
     public void changePassword(String uuid,String newPassword);
 
+    @Update("update user set lasttime=#{time} where uuid=#{uuid}")
+    public void record(String uuid, LocalDate time);
 }

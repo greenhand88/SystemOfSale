@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.gateway.tools.JWTProducer;
-import com.example.gateway.utils.UserInfor;
+import com.example.gateway.utils.LastTime;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +22,7 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -44,6 +45,8 @@ public class AuthLoginGlobalFilter implements GlobalFilter, Ordered {
     @Value("${mq.config.fresh.routeKey}")
     private String freshRouteKey;
 
+    @Value("${mq.config.time.routeKey}")
+    private String timeRouteKey;
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String requestUrl = exchange.getRequest().getPath().toString();
@@ -93,6 +96,7 @@ public class AuthLoginGlobalFilter implements GlobalFilter, Ordered {
                 ServerWebExchange mutableExchange = exchange.mutate().request(mutableReq).build();
                 //刷新令牌持续时间
                 amqpTemplate.convertAndSend(mqexchange,freshRouteKey,uuid.asString());
+                amqpTemplate.convertAndSend(mqexchange,timeRouteKey,new LastTime(uuid.asString(), LocalDate.now()));
                 return chain.filter(mutableExchange);
             }
         }
