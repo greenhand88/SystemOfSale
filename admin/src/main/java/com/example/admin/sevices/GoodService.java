@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class GoodService {
     public boolean addGoods(GoodVO goodVO){
         try{
             goodsMapper.addGoods(UUIDProducer.getUUID(), goodVO.getGoodName(),
-                    goodVO.getGoodDescription(), goodVO.getPrice(), goodVO.getStock(), LocalDate.now());
+                    goodVO.getGoodDescription(), goodVO.getPrice(), goodVO.getStock(), LocalDateTime.now());
             return true;
         }catch (Exception e){
             e.printStackTrace();

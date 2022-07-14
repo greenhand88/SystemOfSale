@@ -7,12 +7,13 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface GoodsMapper {
     @Insert("insert into goods(uuid,goodname,gooddescription,price,stock,date) values (" +
             "#{uuid},#{goodName},#{goodDescription},#{price},#{stock},#{date})")
-    public void addGoods(String uuid, String goodName, String goodDescription, double price, int stock, LocalDate date);
+    public void addGoods(String uuid, String goodName, String goodDescription, double price, int stock, LocalDateTime date);
     @Delete("delete from goods where uuid=#{uuid}")
     public void deleteGoods(String uuid);
     @Select("select * from goods")
