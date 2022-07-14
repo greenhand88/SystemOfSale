@@ -35,6 +35,7 @@ public class MQListenerService {
         redisTemplate.opsForHash().put(userInfor.getUuid(),"nickName",userInfor.getNickName());
         redisTemplate.opsForHash().put(userInfor.getUuid(),"password",userInfor.getPassword());
         redisTemplate.opsForHash().put(userInfor.getUuid(),"salt",userInfor.getSalt());
+        redisTemplate.expire(userInfor.getUuid(),3,TimeUnit.HOURS);
         redisTemplate.exec();
     }
 

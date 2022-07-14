@@ -7,6 +7,8 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
+import java.time.LocalDate;
+
 public class JWTProducer {
     private static final String secret_key="dhoiadjaoimq";//秘钥
     private static Algorithm algorithm = Algorithm.HMAC256(secret_key);//加密算法
@@ -18,6 +20,7 @@ public class JWTProducer {
         try {
             token = JWT.create()
                     .withClaim("uuid",uuid)
+                    //.withClaim("signTime",LocalDate.now() )
                     .sign(algorithm);
         } catch (JWTCreationException exception){
             //Invalid Signing configuration / Couldn't convert Claims.

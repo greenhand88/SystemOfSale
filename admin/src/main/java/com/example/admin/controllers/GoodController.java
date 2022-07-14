@@ -5,7 +5,6 @@ import com.example.admin.VO.PriceVO;
 import com.example.admin.sevices.GoodService;
 import com.example.admin.utils.GoodInfor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
