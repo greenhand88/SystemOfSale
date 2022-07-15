@@ -23,7 +23,7 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)  // OAS_30
                 .enable("dev".equals(active))  // 仅在开发环境开启Swagger
                 .apiInfo(apiInfo())
-                .host("localhost:3008/")  // Base URL
+                .host("localhost:3008")  // Base URL
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.example.good.controllers"))
                 .paths(PathSelectors.any())

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,5 +17,5 @@ public class GoodInfor {
     private String goodDescription;
     private double price;
     private int stock;
-    private LocalDate localDate;
+    private LocalDateTime date;
 }
