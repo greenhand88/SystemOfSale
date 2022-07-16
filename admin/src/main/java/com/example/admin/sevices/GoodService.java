@@ -2,11 +2,13 @@ package com.example.admin.sevices;
 
 import com.example.admin.VO.GoodVO;
 import com.example.admin.VO.PriceVO;
+import com.example.admin.mappers.GoodDetailMapper;
 import com.example.admin.mappers.GoodsMapper;
 import com.example.admin.tools.UUIDProducer;
 import com.example.admin.utils.GoodInfor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -21,38 +23,33 @@ public class GoodService {
     @Autowired
     private GoodsMapper goodsMapper;
 
+    @Autowired
+    private GoodDetailMapper goodDetailMapper;
     /**
      * 上架商品
      * @param goodVO
      * @return
      */
-    public boolean addGoods(GoodVO goodVO){
-        try{
-            goodsMapper.addGoods(UUIDProducer.getUUID(), goodVO.getGoodName(),
-                    goodVO.getGoodDescription(), goodVO.getPrice(), goodVO.getStock(), LocalDateTime.now());
-            return true;
-        }catch (Exception e){
-            e.printStackTrace();
-            return false;
-        }
+    @Transactional
+    public void addGoods(GoodVO goodVO) throws Exception{
+        String uuid = UUIDProducer.getUUID();
+        goodsMapper.addGoods(uuid, goodVO.getGoodName(),
+                goodVO.getGoodDescription(), goodVO.getPrice(), goodVO.getStock(), LocalDateTime.now());
+        goodDetailMapper.addGoods(uuid);
     }
     /**
      * 下架商品
      * @param uuid
      * @return
      */
-    public boolean deleteGoods(String uuid){
-        try{
-            goodsMapper.deleteGoods(uuid);
-            return true;
-        }catch (Exception e){
-            e.printStackTrace();
-            return false;
-        }
+    @Transactional
+    public void deleteGoods(String uuid)throws Exception{
+        goodDetailMapper.deleteGoods(uuid);//先删除从表数据
+        goodsMapper.deleteGoods(uuid);
     }
 
     /**
-     *
+     * 获取商品简讯
      * @return
      */
     public List<GoodInfor> getGoods(){
@@ -64,7 +61,7 @@ public class GoodService {
     }
 
     /**
-     *
+     * 修改价格
      * @param priceVO
      * @return
      */

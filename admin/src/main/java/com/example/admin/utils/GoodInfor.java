@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class GoodInfor {
     private String uuid;
     private String goodName;
-    private String goodDescription;
+    private String subtitle;
     private double price;
     private int stock;
     private LocalDateTime date;

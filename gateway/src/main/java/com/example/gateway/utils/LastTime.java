@@ -6,11 +6,12 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class LastTime implements Serializable {
     private String uuid;
-    private LocalDate localDate;
+    private LocalDateTime localDateTime;
 }

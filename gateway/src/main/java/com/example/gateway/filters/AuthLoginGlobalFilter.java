@@ -23,6 +23,7 @@ import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -31,8 +32,10 @@ import java.util.function.Consumer;
 public class AuthLoginGlobalFilter implements GlobalFilter, Ordered {
     //配置文件中可以配置
     @Value("#{'${jwt.ignoreUrls}'.split(',')}")
-    List<String> ignoreUrls;
+    private List<String> ignoreUrls;
 
+    @Value("${jwt.admin}")
+    private String adminUrl;
     @Autowired
     private RedisTemplate<String,Object> redisTemplate;
 
@@ -51,12 +54,17 @@ public class AuthLoginGlobalFilter implements GlobalFilter, Ordered {
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String requestUrl = exchange.getRequest().getPath().toString();
         //boolean status = CollectionUtil.contains(ignoreUrl, requestUrl);
-        boolean status=true;
+        boolean status=true,isAdmin=false;
         synchronized(requestUrl){
-            for(String url:ignoreUrls){
-                if(requestUrl.contains(url)) {
-                    status = false;
-                    break;
+            if(requestUrl.contains(adminUrl)){
+                status=true;
+                isAdmin=true;
+            }else{
+                for(String url:ignoreUrls){
+                    if(requestUrl.contains(url)) {
+                        status = false;
+                        break;
+                    }
                 }
             }
         }
@@ -74,6 +82,32 @@ public class AuthLoginGlobalFilter implements GlobalFilter, Ordered {
                 return response.writeWith(Mono.just(buffer));
                 //有数据
             }else {
+                //先判断是否是管理员
+                if(isAdmin){
+                    DecodedJWT adminVerify = JWTProducer.adiminVerify(token);
+                    Claim account = adminVerify.getClaim("account");
+                    String adminInfor = (String)redisTemplate.opsForHash().get(account.asString(),"password");
+                    if (adminInfor==null){
+                        JSONObject message = new JSONObject();
+                        message.put("message", "token错误");
+                        byte[] bits = message.toString().getBytes(StandardCharsets.UTF_8);
+                        DataBuffer buffer = response.bufferFactory().wrap(bits);
+                        response.setStatusCode(HttpStatus.UNAUTHORIZED);
+                        response.getHeaders().add("Content-Type", "text/json;charset=UTF-8");
+                        return response.writeWith(Mono.just(buffer));
+                    }
+                    //将数据返回给下级服务器
+                    Consumer<HttpHeaders> httpHeaders = httpHeader -> {
+                        httpHeader.set("account", account.asString());
+                    };
+                    //将现在的request，添加当前身份
+                    ServerHttpRequest mutableReq = exchange.getRequest().mutate().headers(httpHeaders).build();
+                    ServerWebExchange mutableExchange = exchange.mutate().request(mutableReq).build();
+                    //刷新令牌持续时间
+                    amqpTemplate.convertAndSend(mqexchange,freshRouteKey,account.asString());
+                    //amqpTemplate.convertAndSend(mqexchange,timeRouteKey,new LastTime(account.asString(), LocalDateTime.now()));
+                    return chain.filter(mutableExchange);
+                }
                 //校验token
                 DecodedJWT verify = JWTProducer.verify(token);
                 Claim uuid = verify.getClaim("uuid");
@@ -96,7 +130,7 @@ public class AuthLoginGlobalFilter implements GlobalFilter, Ordered {
                 ServerWebExchange mutableExchange = exchange.mutate().request(mutableReq).build();
                 //刷新令牌持续时间
                 amqpTemplate.convertAndSend(mqexchange,freshRouteKey,uuid.asString());
-                amqpTemplate.convertAndSend(mqexchange,timeRouteKey,new LastTime(uuid.asString(), LocalDate.now()));
+                //amqpTemplate.convertAndSend(mqexchange,timeRouteKey,new LastTime(uuid.asString(), LocalDateTime.now()));
                 return chain.filter(mutableExchange);
             }
         }

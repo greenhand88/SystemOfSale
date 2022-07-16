@@ -15,4 +15,10 @@ public interface GoodMapper {
 
     @Select("select * from goods where goodname like #{pattern}")
     public List<GoodInfor> searchForGood(String pattern);
+
+    @Select("select img from gooddetail where uuid=#{uuid}")
+    public String getImg(String uuid);
+
+    @Select("select detail from gooddetail where uuid=#{uuid}")
+    public String getdetail(String uuid);
 }
