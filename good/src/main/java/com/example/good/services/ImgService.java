@@ -25,6 +25,7 @@ public class ImgService {
             FileInputStream inputStream = new FileInputStream(file);
             byte[] bytes = new byte[inputStream.available()];
             inputStream.read(bytes, 0, inputStream.available());
+            inputStream.close();
             return bytes;
         }catch (Exception e){
             e.printStackTrace();
