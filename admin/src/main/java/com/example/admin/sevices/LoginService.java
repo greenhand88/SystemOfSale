@@ -10,6 +10,12 @@ public class LoginService {
     @Autowired
     private LoginMapper loginMapper;
 
+    /**
+     * 管理员登录验证
+     * @param account
+     * @param password
+     * @return
+     */
     public String veritify(String account,String password){
         try{
             if (password.equals(loginMapper.getPassword(account)))

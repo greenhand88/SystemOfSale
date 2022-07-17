@@ -25,6 +25,7 @@ public class GoodService {
 
     @Autowired
     private GoodDetailMapper goodDetailMapper;
+
     /**
      * 上架商品
      * @param goodVO
@@ -72,6 +73,36 @@ public class GoodService {
         }catch (Exception e){
             e.printStackTrace();
             return false;
+        }
+    }
+
+    /**
+     * 修改商品详情
+     * @param uuid
+     * @param detail
+     * @return
+     */
+    public boolean updateDetail(String uuid,String detail){
+        try {
+            goodDetailMapper.updateDetail(uuid,detail);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * 获取商品详情
+     * @param uuid
+     * @return
+     */
+    public String getDetail(String uuid){
+        try {
+            return goodDetailMapper.getdetail(uuid);
+        }catch (Exception e){
+            e.printStackTrace();
+            return "服务端出现异常!";
         }
     }
 }
