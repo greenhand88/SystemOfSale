@@ -22,7 +22,7 @@ public class UserRegisterService {
 
     public LoginResult register(UserRegisterVO userRegisterVO) {
         String uuid = UUIDProducer.getUUID();
-        String md5 = MD5Producer.getMD5String(userRegisterVO.getPasssword());
+        String md5 = MD5Producer.getMD5String(userRegisterVO.getPassword());
         String salt=MD5Producer.getSalt();
         amqpTemplate.convertAndSend(exchange,routeKey,new UserRegisterInfor(
                 uuid,

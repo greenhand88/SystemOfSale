@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserRegisterVO {
     private String phoneNum;
-    private String passsword;
+    private String password;
     private String nickName;
 }
