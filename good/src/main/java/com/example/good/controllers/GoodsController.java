@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/good")
@@ -28,8 +29,8 @@ public class GoodsController {
     }
 
     @PostMapping("/search")
-    public List<GoodInfor>searchGoods(@RequestParam(value = "good_name") String name){
-        return goodService.searchGoods(name);
+    public List<GoodInfor>searchGoods(@RequestBody Map map){
+        return goodService.searchGoods((String)map.get("good_name"));
     }
 
     @GetMapping(value = "/getImg",produces = MediaType.IMAGE_JPEG_VALUE)
