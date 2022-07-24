@@ -4,9 +4,12 @@ import com.example.good.mappers.GoodMapper;
 import com.example.good.utils.GoodInfor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 @Service
 public class GoodService {
     @Autowired
@@ -42,4 +45,10 @@ public class GoodService {
         return goodMapper.searchForGood("%"+name+"%");
     }
 
+    @Transactional
+    public void decreaseStock(Map<String, Integer> goodsInCart){
+        for (String good_uuid : goodsInCart.keySet()){
+            goodMapper.decreaseStock(good_uuid,goodsInCart.get(good_uuid));
+        }
+    }
 }

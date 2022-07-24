@@ -2,6 +2,7 @@ package com.example.good.mappers;
 
 import com.example.good.utils.GoodInfor;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,4 +22,13 @@ public interface GoodMapper {
 
     @Select("select detail from gooddetail where uuid=#{uuid}")
     public String getdetail(String uuid);
+
+    @Select("select stock from goods where uuid=#{uuid}")
+    public int getStock(String uuid);
+
+    @Select("select goodname from goods where uuid=#{uuid}")
+    public String getGoodName(String uuid);
+
+    @Update("update goods set stock=stock-#{n}where uuid=#{uuid}")
+    public void decreaseStock(String uuid,int n);
 }
