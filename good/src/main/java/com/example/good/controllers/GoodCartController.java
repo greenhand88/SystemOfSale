@@ -44,4 +44,15 @@ public class GoodCartController {
     public boolean deleteGood(@RequestHeader(value = "uuid")String uuid, @RequestBody Map map){
         return goodCartService.deleteGoodFromCart(uuid,(String)map.get("good_uuid"),(int)map.get("num"));
     }
+
+    /**
+     * 购物车结账
+     * @param uuid
+     * @return
+     */
+    @PostMapping("/checkOut")
+    public String checkOut(@RequestHeader(value = "uuid")String uuid){
+        return goodCartService.checkOut(uuid);
+    }
+
 }

@@ -25,6 +25,9 @@ public class GoodCartService {
 
     @Autowired
     private GoodService goodService;
+
+    @Autowired
+    private MQService mqService;
     /**
      *
      * @param uuid
@@ -143,6 +146,8 @@ public class GoodCartService {
             }
             goodService.decreaseStock(goodsInCart);//保证事务不会失效
             //todo:给消息队列发送订单信息
+            mqService.sendOrderInfor(uuid,goodsInCart);
+            redisTemplate.delete(uuid);
             return "下单成功!";
         }catch (Exception e){
             e.printStackTrace();
