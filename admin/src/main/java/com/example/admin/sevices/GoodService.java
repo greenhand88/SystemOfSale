@@ -37,7 +37,7 @@ public class GoodService {
         //数据库外键约束改成CASCADE
         goodsMapper.addGoods(uuid, goodVO.getGoodName(),
                 goodVO.getGoodDescription(), goodVO.getPrice(), goodVO.getStock(), LocalDateTime.now());
-        //goodDetailMapper.addGoods(uuid);
+        goodDetailMapper.addGoods(uuid);
     }
     /**
      * 下架商品
