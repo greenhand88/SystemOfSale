@@ -34,9 +34,10 @@ public class GoodService {
     @Transactional
     public void addGoods(GoodVO goodVO) throws Exception{
         String uuid = UUIDProducer.getUUID();
+        //数据库外键约束改成CASCADE
         goodsMapper.addGoods(uuid, goodVO.getGoodName(),
                 goodVO.getGoodDescription(), goodVO.getPrice(), goodVO.getStock(), LocalDateTime.now());
-        goodDetailMapper.addGoods(uuid);
+        //goodDetailMapper.addGoods(uuid);
     }
     /**
      * 下架商品
@@ -45,7 +46,8 @@ public class GoodService {
      */
     @Transactional
     public void deleteGoods(String uuid)throws Exception{
-        goodDetailMapper.deleteGoods(uuid);//先删除从表数据
+        //数据库外键约束改成CASCADE
+        //goodDetailMapper.deleteGoods(uuid);//先删除从表数据
         goodsMapper.deleteGoods(uuid);
     }
 
