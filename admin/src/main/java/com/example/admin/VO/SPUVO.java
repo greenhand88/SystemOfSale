@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class PriceVO {
-    private int sku;
-    private double price;
+public class SPUVO {
+    private String goodName;
+    private String goodDescription;
 }

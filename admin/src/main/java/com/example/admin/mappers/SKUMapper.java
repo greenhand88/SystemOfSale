@@ -25,7 +25,7 @@ public interface SKUMapper {
     public SKUInfor getSKU(int sku);
 
     @Select("select detail from gooddetail where spu=#{spu}")
-    public List<String> getSKUWithSpu(String spu);
+    public List<String> getAllDetailWithSpu(String spu);
 
     @Select("select * from gooddetail where spu=#{spu}")
     public List<SKUInfor> getAllSKUWithSpu(String spu);

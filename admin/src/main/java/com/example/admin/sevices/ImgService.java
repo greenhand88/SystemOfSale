@@ -1,6 +1,6 @@
 package com.example.admin.sevices;
 
-import com.example.admin.mappers.GoodDetailMapper;
+import com.example.admin.mappers.SKUMapper;
 import com.example.admin.tools.FilePathProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,18 +12,18 @@ import java.io.FileInputStream;
 @Service
 public class ImgService {
     @Autowired
-    private GoodDetailMapper goodDetailMapper;
+    private SKUMapper skuMapper;
 
     /**
      * 上传图片
-     * @param uuid
+     * @param sku
      * @param file
      * @return
      */
-    public boolean uploadImg(String uuid,MultipartFile file){
+    public boolean uploadImg(int sku,MultipartFile file){
         try{
-            String path = FilePathProducer.getPath(uuid, file);
-            goodDetailMapper.updateImage(uuid,path);
+            String path = FilePathProducer.getPath(sku, file);
+            skuMapper.updateImage(sku,path);
         }catch (Exception e){
             e.printStackTrace();
             return false;
@@ -33,12 +33,12 @@ public class ImgService {
 
     /**
      * 获取服务器上的img
-     * @param uuid
+     * @param sku
      * @return
      */
-    public byte[] getImg(String uuid){
+    public byte[] getImg(int sku){
         try{
-            String path = goodDetailMapper.getImg(uuid);
+            String path = skuMapper.getImg(sku);
             File file = new File(path);
             FileInputStream inputStream = new FileInputStream(file);
             byte[] bytes = new byte[inputStream.available()];

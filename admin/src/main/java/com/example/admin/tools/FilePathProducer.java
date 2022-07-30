@@ -7,12 +7,12 @@ import java.io.File;
 import java.io.IOException;
 
 public class FilePathProducer {
-    public static String getPath(String uuid,MultipartFile file){
+    public static String getPath(int sku,MultipartFile file){
         if (file.isEmpty()) {
             return "文件为空!";
         }
         // 给文件重命名
-        String fileName = uuid+ "." + file.getContentType()
+        String fileName = String.valueOf(sku)+ "." + file.getContentType()
                 .substring(file.getContentType().lastIndexOf("/") + 1);
         String path = getPath();
         try {
